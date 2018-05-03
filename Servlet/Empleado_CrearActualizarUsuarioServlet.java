@@ -38,7 +38,11 @@ public class Empleado_CrearActualizarUsuarioServlet extends HttpServlet {
         telefono = Integer.parseInt(request.getParameter("telefono"));
         email = request.getParameter("email");
         numerocuenta = Integer.parseInt(request.getParameter("numerocuenta"));
-        alta = Short.parseShort(request.getParameter("alta"));
+        if(request.getParameter("alta")!=null){
+            alta = Short.parseShort(request.getParameter("alta"));
+        }else{
+            alta = 0;
+        }
         domicilio = request.getParameter("domicilio");
         id = request.getParameter("id");
         

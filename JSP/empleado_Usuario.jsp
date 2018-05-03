@@ -42,6 +42,7 @@
         <th>Número de Cuenta</th>
         <th>Alta</th>
         <th>Editar Usuario</th>
+        <th>Movimientos</th>
 
         <%
             for (Usuario usuario : lista) {

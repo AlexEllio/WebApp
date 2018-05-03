@@ -74,24 +74,14 @@
                     <td><input type="text" name="numerocuenta" value="<%= numerocuenta %>"/></td>
                 </tr><tr>
                     <td><b>Alta:</b></td>
-                    <%--
-                        if (alta == null) {
-                    --%>
-                  <%-- <td><input name="alta" value="0" type="checkbox"/></td> --%>
-                    <%--
-                        } else {
-                            if(alta == 0){
-                    --%>
                     <%
                         if(alta == 0){
                     %>
-                    <td><input type="checkbox" name="alta" value="0" /></td>
-                  <%-- <td><input name="alta" value="<%= alta %>" type="checkbox"/></td>--%>
+                    <td><input type="checkbox" name="alta" value="1" /></td>
                     <%
                             }else{
                     %>
                    <td><input type="checkbox" name="alta" value="1" checked /></td>
-                   <%--<td><input name="alta" value="<%= alta %>" type="checkbox" checked/></td>--%>
                     <%    
                             
                         }
