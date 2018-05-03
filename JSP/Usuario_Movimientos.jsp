@@ -41,7 +41,7 @@
     </head>
         <%
         listaMovimientos = (List)request.getAttribute("listaMovimientos");
-    %>
+    %>  
     <body>
         <table  class="table table-striped" border="1" style="width:100%">
             <thead>
