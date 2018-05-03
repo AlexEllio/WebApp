@@ -18,6 +18,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import banco.entity.Movimiento;
 import banco.ejb.MovimientoFacade;
+import banco.ejb.UsuarioFacade;
 import banco.entity.Usuario;
 
 /**
@@ -29,6 +30,10 @@ public class Usuario_TransferenciaServlet extends HttpServlet {
             
         @EJB
         private MovimientoFacade movimientoFacade;
+        
+        @EJB
+        private UsuarioFacade usuarioFacade;
+        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,19 +49,39 @@ public class Usuario_TransferenciaServlet extends HttpServlet {
         HttpSession session = request.getSession();
         
         Usuario usuario = new Usuario(); 
+        usuario = (Usuario)session.getAttribute("usuario"); // cogemos al usuario
         
-        usuario = (Usuario)session.getAttribute("usuario");
+        String beneficiario, concepto;
+        double saldo;
         
-        List<Movimiento> listaMovimientos = this.movimientoFacade.findAll();
+        saldo = Double.parseDouble(request.getParameter("Importe"));
+        beneficiario = request.getParameter("beneficiario");
+        concepto = request.getParameter("concepto");
+        if(beneficiario.equals(usuario.getCuenta().toString())) { // si lo manda a si mismo
+            if(saldo < usuario.getSaldo()){
+                //saltar error
+            } else {
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
+            rd.forward(request, response);
+            }
+        } else {
+            // añadir importe al beneficiario
+            Movimiento nuevoMovimiento = new Movimiento();
+            nuevoMovimiento.setCantidad(usuario.getSaldo()+saldo);
+            nuevoMovimiento.setConcepto(concepto);
+            nuevoMovimiento.setUsuarioidUsuario(usuario.getUsuarioidUsuario());
+            nuevoMovimiento.setUsuarioidUsuario1(usuarioFacade.buscarPorDni(beneficiario));  
+            //creamos nuevo movimiento
+            movimientoFacade.create(nuevoMovimiento);
+        
 
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
         rd.forward(request, response); 
-        
+        }
         }
     
 
-    
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
