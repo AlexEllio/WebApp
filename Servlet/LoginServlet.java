@@ -25,8 +25,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
+
     @EJB
     private UsuarioFacade userFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,38 +40,29 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
- 
-        String  dni = request.getParameter("dni");
+
+        String dni = request.getParameter("dni");
         String password = request.getParameter("password");
-        Usuario user = null;
-        
-        List<Usuario> usuarios = this.userFacade.findAll();
-        for(Usuario u : usuarios){
-            if((u.getDni()).equals(dni)){
-                if(u.getContrasena().equals(password)){
-                    user = u;                  
-                    session.setAttribute("usuario", user);
-                    break;
-                }
-            }
-        }
-        
-        if(user == null){
-            RequestDispatcher rd;
-            rd = (RequestDispatcher)this.getServletContext().getRequestDispatcher("/error.jsp");
-            rd.forward(request, response);
+        Usuario user;
+
+        user = this.userFacade.buscarPorDniYPassword(dni, password);
+        if (user != null) {
+            session.setAttribute("usuario", user);
+        }else{
+            //Lanzar error de usuario o contraseña incorrecta
+            //Aqui permanecemos en la misma pagina borrando los datos
+            response.sendRedirect(request.getContextPath());
             return;
         }
+        if (user.getEmpleado() == 1) {
+            response.sendRedirect(request.getContextPath() + "/Empleado_UsuarioServlet");
+        } else {
 
-        if(user.getEmpleado() == 1){ 
-           response.sendRedirect(request.getContextPath() + "/Empleado_UsuarioServlet");
-        }else{
-
-          response.sendRedirect(request.getContextPath() + "/Usuario_DatosPersonalesServlet");
+            response.sendRedirect(request.getContextPath() + "/Usuario_DatosPersonalesServlet");
         }
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
