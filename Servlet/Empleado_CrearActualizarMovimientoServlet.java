@@ -10,8 +10,13 @@ import banco.ejb.UsuarioFacade;
 import banco.entity.Movimiento;
 import banco.entity.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,15 +27,17 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author beaco
+ * @author JorgeL
  */
-@WebServlet(name = "Empleado_MovimientosServlet", urlPatterns = {"/Empleado_MovimientosServlet"})
-public class Empleado_MovimientosServlet extends HttpServlet {
+@WebServlet(name = "Empleado_CrearActualizarMovimientoServlet", urlPatterns = {"/Empleado_CrearActualizarMovimientoServlet"})
+public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     @EJB
     private MovimientoFacade movimientoFacade;
-    @EJB
-    private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,18 +49,64 @@ public class Empleado_MovimientosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usuario usuario;
+        Movimiento movimiento;
+
+        String tipodemovimiento = request.getParameter("tipodemovimiento");
+        String fecha = request.getParameter("fecha");
+        String entidad = request.getParameter("entidad");
+        String concepto = request.getParameter("concepto");
+        String cantidad = request.getParameter("cantidad");
+        String empleadosupervisor = request.getParameter("empleadosupervisor");
         String id = request.getParameter("id");
-         if (id != null) { // Caso de uso editar
-            usuario = this.usuarioFacade.find(new Integer(id));
-            request.setAttribute("usuarioElegido", usuario);            
+
+        if ("".equals(id)) { // Crear
+            movimiento = new Movimiento();
+        } else { // Editar
+            movimiento = this.movimientoFacade.find(new Integer(id));
         }
-         
-        List<Movimiento> listaMovimientos = this.movimientoFacade.findAll();
-        
-        request.setAttribute("lista", listaMovimientos);
-        
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/empleado_Movimiento.jsp");
+
+        if (tipodemovimiento != null) {
+            movimiento.setTipo(tipodemovimiento);
+        }
+
+        if (fecha != null) {
+            String fechaAMD = fecha.substring(0, 9);
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = format.parse(fechaAMD);
+            } catch (ParseException ex) {
+                Logger.getLogger(Empleado_CrearMovimientoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (date != null) {
+                movimiento.setFecha(date);
+            }
+        }
+
+        if (entidad != null) {
+            movimiento.setEntidad(entidad);
+        }
+
+        if (concepto != null) {
+            movimiento.setConcepto(concepto);
+        }
+
+        if (cantidad != null) {
+            movimiento.setCantidad(Double.parseDouble(cantidad));
+        }
+
+        if (empleadosupervisor != null) {
+            Usuario u = this.usuarioFacade.find(empleadosupervisor);
+            movimiento.setUsuarioidUsuario1(u);
+        }
+
+        if ("".equals(id)) {
+            this.movimientoFacade.create(movimiento);
+        } else {
+            this.movimientoFacade.edit(movimiento);
+        }
+
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_MovimientosServlet");
         rd.forward(request, response);
     }
 

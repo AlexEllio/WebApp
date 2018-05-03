@@ -26,65 +26,69 @@
     </table>
 </head>
 <body>
-    <ul id="enunciado">
-        <h3>Lista Usuarios</h3>
-    </ul>
-    <ul>
-        <table id = "customers"> 
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>DNI</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Número de Cuenta</th>
-            <th>Alta</th>
-            <th>Editar Usuario</th>
+<ul1>
+    <li><a href="Empleado_UsuarioServlet" class="active">Usuarios</a></li>
+</ul1>
+<ul id="enunciado">
+    <h3>Lista Usuarios</h3>
+</ul>
+<ul>
+    <table id = "customers"> 
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>DNI</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Número de Cuenta</th>
+        <th>Alta</th>
+        <th>Editar Usuario</th>
+
+        <%
+            for (Usuario usuario : lista) {
+                if (usuario.getEmpleado() == 0) {
+        %>   
+        <tr>
+            <td>
+                <%= usuario.getNombre()%>
+            </td>
+            <td>
+                <%= usuario.getApellidos()%>
+            </td>
+            <td>
+                <%= usuario.getDni()%>
+            </td>
+            <td>
+                <%= usuario.getTelefono()%>
+            </td>
+            <td>
+                <%= usuario.getEmail()%>
+            </td>
+            <td>
+                <%= usuario.getCuenta()%>
+            </td>
+            <%
+                if (usuario.getEstado() == 1) {
+            %>
+            <td><input type="checkbox" name="alta" value="true" disabled checked /></td>
+                <%
+                } else {
+                %>
+            <td><input type="checkbox" name="alta" value="true" disabled /></td> 
 
             <%
-                for (Usuario usuario : lista) {
-                    if (usuario.getEmpleado() == 0) {
-            %>   
-            <tr>
-                <td>
-                    <%= usuario.getNombre()%>
-                </td>
-                <td>
-                    <%= usuario.getApellidos()%>
-                </td>
-                <td>
-                    <%= usuario.getDni()%>
-                </td>
-                <td>
-                    <%= usuario.getTelefono()%>
-                </td>
-                <td>
-                    <%= usuario.getEmail()%>
-                </td>
-                <td>
-                    <%= usuario.getCuenta()%>
-                </td>
-                <%
-                    if (usuario.getEstado() == 1) {
-                %>
-                <td><input type="checkbox" name="alta" value="true" disabled checked /></td>
-                    <%
-                    } else {
-                    %>
-                <td><input type="checkbox" name="alta" value="true" disabled /></td> 
-
-                <%
-                    }
-                %>
-
-                <td align="center"><a class="button1" href="Empleado_EditarUsuarioServlet?id=<%= usuario.getIdUsuario()%>" >Editar</a></td>
-            </tr>
-            <%       }
                 }
-            %>    
-        </table>
+            %>
 
-        <br><a id ="font" class="button" href="empleado_InsertarUsuario.jsp">Insertar nuevo Usuario</a>
-    </ul>
+            <td align="center"><a class="button1" href="Empleado_EditarServlet?id=<%= usuario.getIdUsuario()%>" >Editar</a></td>
+            <td align="center"><a class="button1" href="Empleado_MovimientosServlet?id=<%= usuario.getIdUsuario()%>" >Movimientos</a></td>
+        </tr>
+        <%       }
+            }
+        %>    
+    </table>
+
+    <br><a id ="font" class="button" href="Empleado_EditarServlet">Insertar nuevo Usuario</a>
+</ul>
 </body>
 </html>
 

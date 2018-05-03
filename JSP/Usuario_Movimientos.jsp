@@ -16,11 +16,18 @@
     %>
 <html>
     <head>
+            <link rel="stylesheet" href="css/FancyTable.css">
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <ul1>
+        <li><a href="Usuario_DatosPersonalesServlet" class="notActive">Datos Personales</a></li>
+        <li><a href="Usuario_MovimientosServlet" class="active">Movimientos</a></li>
+        <li><a href="Usuario_TransferenciaServlet" class="notActive">Transferencias</a></li>
+    </ul1>
         <title>Usuario Movimientos</title>
     <br>
         <table style="width:100%">
@@ -48,6 +55,8 @@
             <tbody>
                 <%
                     for (Movimiento mov : listaMovimientos) {
+                        if (usuario.getIdUsuario() == mov.getUsuarioidUsuario().getIdUsuario()) {
+            
                 %>
                 <tr>
                     <td><%= mov.getFecha()    %></td>
@@ -55,7 +64,8 @@
                     <td><%= mov.getConcepto() %></td>
                     <td><%= mov.getCantidad() %></td>
                 </tr>
-                <%  }  %>
+                <%      }
+                    }  %>
             </tbody>
         </table>
     </body>

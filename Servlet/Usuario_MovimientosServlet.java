@@ -6,7 +6,6 @@
 package banco.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,18 +16,23 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import javax.ejb.EJB;
 import banco.entity.Movimiento;
-import banco.ejb.MovimientoFacade;
 import banco.entity.Usuario;
+import banco.ejb.MovimientoFacade;
+import banco.ejb.UsuarioFacade;
 
 /**
  *
  * @author Alex
  */
-@WebServlet(name = "Usuario_TransferenciaServlet", urlPatterns = {"/Usuario_TransferenciaServlet"})
-public class Usuario_TransferenciaServlet extends HttpServlet {
+@WebServlet(name = "Usuario_MovimientosServlet", urlPatterns = {"/Usuario_MovimientosServlet"})
+public class Usuario_MovimientosServlet extends HttpServlet {
+
             
         @EJB
         private MovimientoFacade movimientoFacade;
+        
+        @EJB
+        private UsuarioFacade usuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,22 +42,29 @@ public class Usuario_TransferenciaServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        
-        Usuario usuario = new Usuario(); 
-        
+        String id, nombre, apellidos;
+        double saldo;
+
+        Usuario usuario = new Usuario();
         usuario = (Usuario)session.getAttribute("usuario");
         
-        List<Movimiento> listaMovimientos = this.movimientoFacade.findAll();
-
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
+        List<Movimiento> listaMovimientos = this.movimientoFacade.findAll();       
+        request.setAttribute("listaMovimientos", listaMovimientos);
+        
+        saldo = usuario.getSaldo();
+        nombre = usuario.getNombre();
+        apellidos = usuario.getApellidos();
+        
+        
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Movimientos.jsp");
         rd.forward(request, response); 
         
-        }
-    
+        
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
