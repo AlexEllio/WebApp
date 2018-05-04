@@ -60,7 +60,7 @@
                 <%= movimiento.getUsuarioidUsuario1().getDni()%>
 
 
-            <td><a href="Empleado_EditarMovimientosServlet?id=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>" >Editar</a></td>
+            <td><a href="Empleado_EditarMovimientoServlet?iduser=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>&idmovimiento=<%= movimiento.getIdMovimiento()%>" >Editar</a></td>
             <%}
             %>
         </tr>
@@ -68,6 +68,6 @@
             }
         %>    
     </table>
-    <a href="empleado_InsertarMovimientos.jsp">Insertar nuevo Movimento</a>
+    <a href="Empleado_EditarMovimientoServlet?iduser=<%= usuario.getIdUsuario() %>">Insertar nuevo Movimento para el usuario con dni<%=usuario.getDni()%></a>
 </body>
 </html>
