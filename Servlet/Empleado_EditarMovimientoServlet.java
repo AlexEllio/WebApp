@@ -6,7 +6,10 @@
 package banco.servlet;
 
 import banco.ejb.MovimientoFacade;
+import banco.ejb.UsuarioFacade;
 import banco.entity.Movimiento;
+import banco.entity.Usuario;
+import static banco.entity.Usuario_.dni;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -21,8 +24,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author JorgeL
  */
+
 @WebServlet(name = "Empleado_EditarMovimientoServlet", urlPatterns = {"/Empleado_EditarMovimientoServlet"})
 public class Empleado_EditarMovimientoServlet extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
     @EJB
     private MovimientoFacade movimientoFacade;
@@ -39,14 +46,20 @@ public class Empleado_EditarMovimientoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Movimiento movimiento;
-        String idmovimiento;
-
+        Usuario usuario;
+        String idmovimiento, iduser;
+        iduser = request.getParameter("iduser");
         idmovimiento = request.getParameter("idmovimiento");
         if (idmovimiento != null) { // Caso de editar
             movimiento = this.movimientoFacade.find(new Integer(idmovimiento));
             request.setAttribute("movimiento", movimiento);
         }
-
+        
+        if(iduser !=null){//Usuario al que le van a meter  el movimiento
+        usuario = this.usuarioFacade.find(new Integer(iduser));
+        request.setAttribute("ue",usuario);  
+        }
+       
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/empleado_nuevoEditarMovimiento.jsp");
         dispatcher.forward(request, response);
     }

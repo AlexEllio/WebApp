@@ -57,8 +57,9 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
         String concepto = request.getParameter("concepto");
         String cantidad = request.getParameter("cantidad");
         String empleadosupervisor = request.getParameter("empleadosupervisor");
-        String id = request.getParameter("id");
-
+        String usuario = request.getParameter("usuario");
+        String id = request.getParameter("idmovimiento");
+        System.out.println(usuario);
         if ("".equals(id)) { // Crear
             movimiento = new Movimiento();
         } else { // Editar
@@ -76,7 +77,7 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
             try {
                 date = format.parse(fechaAMD);
             } catch (ParseException ex) {
-                Logger.getLogger(Empleado_CrearMovimientoServlet.class.getName()).log(Level.SEVERE, null, ex);
+               // Logger.getLogger(Empleado_CrearMovimientoServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (date != null) {
                 movimiento.setFecha(date);
@@ -96,17 +97,22 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
         }
 
         if (empleadosupervisor != null) {
-            Usuario u = this.usuarioFacade.find(empleadosupervisor);
-            movimiento.setUsuarioidUsuario1(u);
+            Usuario e = this.usuarioFacade.find(new Integer(empleadosupervisor));
+            movimiento.setUsuarioidUsuario1(e);
         }
-
+        
+        if (usuario != null) {
+            Usuario u = this.usuarioFacade.find(new Integer(usuario));
+            movimiento.setUsuarioidUsuario(u);
+        }
+        
         if ("".equals(id)) {
             this.movimientoFacade.create(movimiento);
         } else {
             this.movimientoFacade.edit(movimiento);
         }
 
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_MovimientosServlet");
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_UsuarioServlet"); ////CAMBIARRRR!!! es solo de prueba
         rd.forward(request, response);
     }
 
