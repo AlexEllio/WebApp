@@ -45,6 +45,17 @@
         <title>Insertar/Editar Usuario</title>
     </head>
     <body>
+        <% 
+            if(usuario == null){
+        %>
+        <h2>Inserte un nuevo usuario</h2>
+        <%
+            }else{
+        %>
+        <h2>Editando a <%= nombre %> <%= apellidos %></h2>
+        <%
+            }
+        %>
         <form name="edit" action="Empleado_CrearActualizarUsuarioServlet" method="post">
             <input type="hidden" name="id" value="<%= id %>" />
             <table border="1">
