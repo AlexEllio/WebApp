@@ -30,6 +30,7 @@
         <th>Nombre</th>
         <th>Apellidos</th>
         <th>DNI</th>
+        <th>Concepto</th>
         <th>Tipo de Movimiento</th>
         <th>Entidad</th>
         <th>Empleado Supervisor</th>
@@ -49,6 +50,9 @@
             </td>
             <td>
                 <%= movimiento.getUsuarioidUsuario().getDni()%>
+            </td>
+            <td>
+                <%= movimiento.getConcepto() %>
             </td>
             <td>
                 <%= movimiento.getTipo()%>
