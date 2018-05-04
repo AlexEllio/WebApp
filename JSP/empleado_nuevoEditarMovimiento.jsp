@@ -10,8 +10,8 @@
 <%
     Movimiento movimiento;
     Usuario usuarioelegido, empleado;
-    String unombre,uapellidos,idu;
-    String tipodemovimiento, fecha, entidad, concepto, cantidad , empleadosupervisor,usuario, id,idempleado;
+    String unombre, uapellidos, idu;
+    String tipodemovimiento, fecha, entidad, concepto, cantidad, empleadosupervisor, usuario, id, idempleado;
     movimiento = (Movimiento) request.getAttribute("movimiento");
     usuarioelegido = (Usuario) request.getAttribute("ue");
     empleado = (Usuario) session.getAttribute("usuario");
@@ -25,23 +25,23 @@
         usuario = movimiento.getUsuarioidUsuario().toString();
         empleadosupervisor = movimiento.getUsuarioidUsuario1().toString();
     } else { // Crear usuario
-        id="";
+        id = "";
         tipodemovimiento = "";
         fecha = "";
         entidad = "";
         concepto = "";
         cantidad = "";
-        usuario="";
+        usuario = "";
         empleadosupervisor = "";
     }
-    if(usuarioelegido!=null){
-       unombre= usuarioelegido.getNombre();
-       uapellidos = usuarioelegido.getApellidos();
-       idu = usuarioelegido.getIdUsuario().toString();
-    }else{
-        unombre="es null pringado";
-        uapellidos="";
-        idu="";
+    if (usuarioelegido != null) {
+        unombre = usuarioelegido.getNombre();
+        uapellidos = usuarioelegido.getApellidos();
+        idu = usuarioelegido.getIdUsuario().toString();
+    } else {
+        unombre = "es null pringado";
+        uapellidos = "";
+        idu = "";
     }
     idempleado = empleado.getIdUsuario().toString();
 %>
@@ -53,32 +53,59 @@
         <title>Insertar/Editar Movimiento</title>
     </head>
     <body>
-        <h1>Insertar nuevo movimiento a <%= unombre %> <%= uapellidos%></h1>
+        <h1>Insertar nuevo movimiento a <%= unombre%> <%= uapellidos%></h1>
         <form name="edit" action="Empleado_CrearActualizarMovimientoServlet" method="post">
-            <input type="hidden" name="idmovimiento" value="<%= id %>" />
+            <input type="hidden" name="idmovimiento" value="<%= id%>" />
             <table border="1">
                 <tbody>
                     <tr>
                         <td><b>Concepto:</b></td>
-                        <td><input type="text" name="concepto" max="50" maxlength="50" value="<%= concepto %>"/></td>		
+                        <td><input type="text" name="concepto" max="50" maxlength="50" value="<%= concepto%>"/></td>		
                     </tr><tr>		
                         <td><b>Fecha(yyyy-MM-dd):</b></td>	
-                        <td><input type="text" name="fecha" max="50" maxlength="50" value="<%= fecha %>"/></td>
+                        <td><input type="text" name="fecha" max="50" maxlength="50" value="<%= fecha%>"/></td>
                     </tr><tr>
                         <td><b>Cantidad:</b></td>
-                        <td><input type="text" name="cantidad" max="50" maxlength="50" value="<%= cantidad %>"/></td>
+                        <td><input type="text" name="cantidad" max="50" maxlength="50" value="<%= cantidad%>"/></td>
                     </tr><tr>
                         <td><b>Tipo de Movimiento('ingreso','debito','transferencia'):</b></td>
-                        <td><input type="text" name="tipodemovimiento" max="50" maxlength="50" value="<%= tipodemovimiento %>"/></td>
+                        <td>
+                            <%
+                                if(tipodemovimiento.equalsIgnoreCase("ingreso")){                                  
+                                %>
+                            <input type="radio" name="tipodemovimiento" value="ingreso" checked>Ingreso
+                            <input type="radio" name="tipodemovimiento" value="debito" >Debito
+                            <input type="radio" name="tipodemovimiento" value="transferencia" >Transferencia</td>
+                            <%
+                                }else if(tipodemovimiento.equalsIgnoreCase("debito")){
+                                %>
+                            <input type="radio" name="tipodemovimiento" value="ingreso">Ingreso
+                            <input type="radio" name="tipodemovimiento" value="debito" checked>Debito
+                            <input type="radio" name="tipodemovimiento" value="transferencia" >Transferencia</td>
+                            <%
+                                 }else if(tipodemovimiento.equalsIgnoreCase("transferencia")){
+                            %>
+                             <input type="radio" name="tipodemovimiento" value="ingreso">Ingreso
+                            <input type="radio" name="tipodemovimiento" value="debito">Debito
+                            <input type="radio" name="tipodemovimiento" value="transferencia" checked>Transferencia</td>
+                            <% 
+                                }else{
+                             %>   
+                              <input type="radio" name="tipodemovimiento" value="ingreso">Ingreso
+                            <input type="radio" name="tipodemovimiento" value="debito">Debito
+                            <input type="radio" name="tipodemovimiento" value="transferencia">Transferencia</td>
+                            <% } %>
                     </tr><tr>   
                         <td><b>Entidad:</b></td>
-                        <td><input type="text" name="entidad" max="50" maxlength="50" value="<%= entidad %>"/></td>
+                        <td><input type="text" name="entidad" max="50" maxlength="50" value="<%= entidad%>"/></td>
                     </tr><tr>   
                         <td><b>Usuario Receptor(id):</b></td>
-                        <td><input type="text" name="usuario" max="50" maxlength="50" value="<%= idu  %>"/></td>
+                        <td><input type="text" name="usuario" max="50" maxlength="50" value="<%= idu%>" disabled="disabled"/></td>
+                        <td hidden><input type="text" name="usuario" max="50" maxlength="50" value="<%= idu%>"/></td> 
                     </tr><tr>  
                         <td><b>Empleado Supervisor(id):</b></td>
-                        <td><input type="text" name="empleadosupervisor" max="50" maxlength="50" value="<%= idempleado %>"/></td>
+                        <td><input type="text" name="empleadosupervisor" max="50" maxlength="50" value="<%= idempleado%>" disabled="disabled"/></td>
+                        <td hidden><input type="text" name="empleadosupervisor" max="50" maxlength="50" value="<%= idempleado%>" /></td>
                     </tr><tr>    
                         <td><input type="submit" name="btnSave" value="Insertar Nuevo Movimiento"/></td>
                         <td><a href="Empleado_MovimientosServlet?id=<%= idu%>">Cancelar</a></td>
