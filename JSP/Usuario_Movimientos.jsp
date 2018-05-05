@@ -26,7 +26,7 @@
       <ul1>
         <li><a href="Usuario_DatosPersonalesServlet" class="notActive">Datos Personales</a></li>
         <li><a href="Usuario_MovimientosServlet" class="active">Movimientos</a></li>
-        <li><a href="Usuario_TransferenciaServlet" class="notActive">Transferencias</a></li>
+        <li><a href="Usuario_Transferencias.jsp" class="notActive">Transferencias</a></li>
     </ul1>
         <title>Usuario Movimientos</title>
     <br>
