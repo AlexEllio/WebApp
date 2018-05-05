@@ -48,15 +48,15 @@ public class Usuario_TransferenciaServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         
-        Usuario usuario = new Usuario(); 
+        Usuario usuario; 
         usuario = (Usuario)session.getAttribute("usuario"); // cogemos al usuario
         
         String beneficiario, concepto;
         double saldo;
         
         saldo = Double.parseDouble(request.getParameter("Importe"));
-        beneficiario = request.getParameter("beneficiario");
-        concepto = request.getParameter("concepto");
+        beneficiario = request.getParameter("Beneficiario");
+        concepto = request.getParameter("Concepto");
         if(beneficiario.equals(usuario.getCuenta().toString())) { // si lo manda a si mismo
             if(saldo < usuario.getSaldo()){
                 //saltar error
