@@ -46,12 +46,11 @@ public class Empleado_MovimientosServlet extends HttpServlet {
         String id = request.getParameter("id");
          if (id != null) { // Caso de uso editar
             usuario = this.usuarioFacade.find(new Integer(id));
-            request.setAttribute("usuarioElegido", usuario);            
+            request.setAttribute("usuarioElegido", usuario);
         }
-         
-        List<Movimiento> listaMovimientos = this.movimientoFacade.findAll();
-        
+        List<Movimiento> listaMovimientos = this.movimientoFacade.buscarPorIdUsuario(new Integer(id));
         request.setAttribute("lista", listaMovimientos);
+        
         
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/empleado_Movimiento.jsp");
         rd.forward(request, response);
