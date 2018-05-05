@@ -24,9 +24,9 @@ public class Empleado_CrearActualizarUsuarioServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String nombre, apellidos, dni, email, id, contrasena, domicilio;
+        String nombre, apellidos, dni, email, id, contrasena, domicilio, telefonoStr, numerocuentaStr;
         Integer telefono, numerocuenta;
-        Double saldo;
+        String error;
         Short alta;
         Short value = 0;
         Usuario usuario;
@@ -35,62 +35,91 @@ public class Empleado_CrearActualizarUsuarioServlet extends HttpServlet {
         apellidos = request.getParameter("apellidos");
         dni = request.getParameter("dni");
         contrasena = request.getParameter("contrasena");
-        telefono = Integer.parseInt(request.getParameter("telefono"));
+        telefonoStr = request.getParameter("telefono");
         email = request.getParameter("email");
-        numerocuenta = Integer.parseInt(request.getParameter("numerocuenta"));
-        if(request.getParameter("alta")!=null){
-            alta = Short.parseShort(request.getParameter("alta"));
-        }else{
-            alta = 0;
-        }
+        numerocuentaStr = request.getParameter("numerocuenta");
         domicilio = request.getParameter("domicilio");
         id = request.getParameter("id");
         
+        Usuario user = this.usuarioFacade.findByDni(dni);
         
-        if ("".equals(id)) { // Crear
-            usuario = new Usuario();
-            usuario.setSaldo(0.0);
-            usuario.setEmpleado(value);
-        } else { // Editar
-            usuario = this.usuarioFacade.find(new Integer(id));
-        }
-        
-        if(nombre!=null){
-            usuario.setNombre(nombre);
-        }
-        if(apellidos != null){
-             usuario.setApellidos(apellidos);
-        }
-        if(dni != null){
-            usuario.setDni(dni);
-        }
-        if(contrasena != null){
-            usuario.setContrasena(contrasena);
-        }
-        if(telefono != null){
-            usuario.setTelefono(telefono);
-        }
-        if(email != null){
-             usuario.setEmail(email);
-        }
-        if(numerocuenta != null){
-            usuario.setCuenta(numerocuenta);
-        }
-        
-        usuario.setEstado(alta);
-        
-        if(domicilio != null){
-            usuario.setDomicilio(domicilio);
-        }
-        
-        if ("".equals(id)) {                  
-           this.usuarioFacade.create(usuario);
+        if (("".equals(nombre)) || "".equals(apellidos) || "".equals(dni) ||
+            "".equals(contrasena) || "".equals(telefonoStr) || "".equals(email)  ||
+            "".equals(numerocuentaStr) || "".equals(domicilio)) {
+            
+            error = "Usuario con datos incorrectos o vacios";
+            request.setAttribute("error", error);
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ErrorUsuario.jsp");
+            rd.forward(request, response);
+        } else if (user != null && user.getIdUsuario() != Integer.parseInt(id)) {
+            error = "Usuario con DNI repetido";
+            request.setAttribute("error", error);
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ErrorUsuario.jsp");
+            rd.forward(request, response);
         } else {
-            this.usuarioFacade.edit(usuario);
+            try {
+                telefono = Integer.parseInt(telefonoStr);
+                numerocuenta = Integer.parseInt(numerocuentaStr);
+                
+                if(request.getParameter("alta")!=null){
+                    alta = Short.parseShort(request.getParameter("alta"));
+                }else{
+                    alta = 0;
+                }
+
+                if ("".equals(id)) { // Crear
+                    usuario = new Usuario();
+                    usuario.setSaldo(0.0);
+                    usuario.setEmpleado(value);
+                } else { // Editar
+                    usuario = this.usuarioFacade.find(new Integer(id));
+                }
+
+                if(nombre!=null){
+                    usuario.setNombre(nombre);
+                }
+                if(apellidos != null){
+                    usuario.setApellidos(apellidos);
+                }
+                if(dni != null){
+                    usuario.setDni(dni);
+                }
+                if(contrasena != null){
+                    usuario.setContrasena(contrasena);
+                }
+                if(email != null){
+                    usuario.setEmail(email);
+                }
+                if(telefono != null){
+                    usuario.setTelefono(telefono);
+                }
+                if(numerocuenta != null){
+                    usuario.setCuenta(numerocuenta);
+                }
+
+                usuario.setEstado(alta);
+
+                if(domicilio != null){
+                    usuario.setDomicilio(domicilio);
+                }
+
+                if ("".equals(id)) {                  
+                    this.usuarioFacade.create(usuario);
+                } else {
+                    this.usuarioFacade.edit(usuario);
+                }
+
+                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_UsuarioServlet");
+                rd.forward(request, response);
+                
+                }catch (NumberFormatException e) {
+                    
+                    error = "Usuario con datos incorrectos o vacios";
+                    request.setAttribute("error", error);
+                    RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ErrorUsuario.jsp");
+                    rd.forward(request, response);
+            }
         }
-        
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_UsuarioServlet");
-        rd.forward(request, response);
     }
 
     @Override

@@ -30,6 +30,7 @@
         <th>Nombre</th>
         <th>Apellidos</th>
         <th>DNI</th>
+        <th>Concepto</th>
         <th>Tipo de Movimiento</th>
         <th>Entidad</th>
         <th>Empleado Supervisor</th>
@@ -39,8 +40,6 @@
             for (Movimiento movimiento : lista) {
         %>   
         <tr>
-            <%if (usuario.getIdUsuario() == movimiento.getUsuarioidUsuario().getIdUsuario()) {
-            %>
             <td>
                 <%= movimiento.getUsuarioidUsuario().getNombre()%>
             </td>
@@ -49,6 +48,9 @@
             </td>
             <td>
                 <%= movimiento.getUsuarioidUsuario().getDni()%>
+            </td>
+            <td>
+                <%= movimiento.getConcepto() %>
             </td>
             <td>
                 <%= movimiento.getTipo()%>
@@ -60,14 +62,12 @@
                 <%= movimiento.getUsuarioidUsuario1().getDni()%>
 
 
-            <td><a href="Empleado_EditarMovimientosServlet?id=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>" >Editar</a></td>
-            <%}
-            %>
+            <td><a href="Empleado_EditarMovimientoServlet?iduser=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>&idmovimiento=<%= movimiento.getIdMovimiento()%>" >Editar</a></td>
         </tr>
         <%
             }
         %>    
     </table>
-    <a href="empleado_InsertarMovimientos.jsp">Insertar nuevo Movimento</a>
+    <a href="Empleado_EditarMovimientoServlet?iduser=<%= usuario.getIdUsuario() %>">Insertar nuevo Movimento para el usuario con dni<%=usuario.getDni()%></a>
 </body>
 </html>

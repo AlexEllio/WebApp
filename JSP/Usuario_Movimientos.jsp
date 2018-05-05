@@ -34,7 +34,7 @@
             <tr style="height: 5px">
                 <td>Hola <%=usuario.getNombre()%> <%=usuario.getApellidos()%></td> 
                 <td><b>Saldo </b> <%= usuario.getSaldo() %> </td><%-- Falta coger saldo de servlet--%>
-                <td><a href="Usuario_Movimientos.jsp">Salir</a></td>
+                <td><a href="login.jsp">Salir</a></td>
             </tr>
         </table>
     <br>
@@ -55,8 +55,6 @@
             <tbody>
                 <%
                     for (Movimiento mov : listaMovimientos) {
-                        if (usuario.getIdUsuario() == mov.getUsuarioidUsuario().getIdUsuario()) {
-            
                 %>
                 <tr>
                     <td><%= mov.getFecha()    %></td>
@@ -64,7 +62,7 @@
                     <td><%= mov.getConcepto() %></td>
                     <td><%= mov.getCantidad() %></td>
                 </tr>
-                <%      }
+                <% 
                     }  %>
             </tbody>
         </table>
