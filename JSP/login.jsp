@@ -12,6 +12,18 @@
     <link href="signin.css" rel="stylesheet">
     <meta name="viewport" content="height=device-height, content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <head>
+
+        <%
+            if (request.getParameterNames().hasMoreElements() && request.getParameter("error").equals("error")) {
+        %>
+        }
+        <script language='javascript'>alert('Usuario o Contraseña incorrecta');</script>
+        <%
+            }
+        %>
+
+
+
         <title>Inicio de Sesión</title>
         <meta charset="UTF-8">
     </head>

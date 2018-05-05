@@ -9,6 +9,7 @@ import banco.ejb.UsuarioFacade;
 import banco.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -53,7 +54,8 @@ public class LoginServlet extends HttpServlet {
         }else{
             //Lanzar error de usuario o contraseña incorrecta
             //Aqui permanecemos en la misma pagina borrando los datos
-            response.sendRedirect(request.getContextPath());
+            out.println("Usuario o contraseña incorrecta");
+            response.sendRedirect(request.getContextPath() + "/login.jsp?error=error");
             return;
         }
         if (user.getEmpleado() == 1) {
@@ -78,8 +80,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+       
     }
-
+        
     /**
      * Handles the HTTP <code>POST</code> method.
      *
