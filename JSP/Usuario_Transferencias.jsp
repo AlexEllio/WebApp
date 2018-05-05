@@ -38,7 +38,7 @@
         <h1><b>Transferencia Bancaria</b></h1>
     </div>
 
-    <form class="form-horizontal" action="/action_page.php">
+    <form class="form-horizontal" action="Usuario_TransferenciaServlet">
         <div class="form-group">
             <label class="control-label col-sm-2" for="text">Beneficiario:</label>
             <div class="col-sm-10">
