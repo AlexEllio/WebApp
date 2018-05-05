@@ -42,19 +42,19 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="text">Beneficiario:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="Beneficiario" placeholder="Introduce Beneficiario">
+                <input type="text" class="form-control" name="Beneficiario" placeholder="Introduce Beneficiario">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="Concepto">Concepto:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="Concepto" placeholder="Introduce Concepto">
+                <input type="text" class="form-control" name="Concepto" placeholder="Introduce Concepto">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="Concepto">Importe:</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="Importe" placeholder="Introduce Importe">
+                <input type="number" class="form-control" name="Importe" placeholder="Introduce Importe">
             </div>
         </div>
         <div class="form-group">
