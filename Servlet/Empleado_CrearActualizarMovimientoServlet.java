@@ -15,8 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,7 +57,19 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
         String empleadosupervisor = request.getParameter("empleadosupervisor");
         String usuario = request.getParameter("usuario");
         String id = request.getParameter("idmovimiento");
-        System.out.println(usuario);
+        String error;
+        
+        if (("".equals(tipodemovimiento)) || "".equals(fecha) || "".equals(entidad) ||
+            "".equals(concepto) || "".equals(cantidad) || "".equals(empleadosupervisor)  ||
+            "".equals(usuario)) {
+            
+            error = "Movimiento con datos incorrectos o vacios";
+            request.setAttribute("error", error);
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ErrorUsuario.jsp");
+            rd.forward(request, response);
+        } else{
+        
+        
         if ("".equals(id)) { // Crear
             movimiento = new Movimiento();
         } else { // Editar
@@ -115,7 +125,7 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_UsuarioServlet"); ////CAMBIARRRR!!! es solo de prueba
         rd.forward(request, response);
     }
-
+}
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -154,5 +164,5 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }
