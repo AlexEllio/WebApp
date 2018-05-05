@@ -40,8 +40,6 @@
             for (Movimiento movimiento : lista) {
         %>   
         <tr>
-            <%if (usuario.getIdUsuario() == movimiento.getUsuarioidUsuario().getIdUsuario()) {
-            %>
             <td>
                 <%= movimiento.getUsuarioidUsuario().getNombre()%>
             </td>
@@ -65,8 +63,6 @@
 
 
             <td><a href="Empleado_EditarMovimientoServlet?iduser=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>&idmovimiento=<%= movimiento.getIdMovimiento()%>" >Editar</a></td>
-            <%}
-            %>
         </tr>
         <%
             }
