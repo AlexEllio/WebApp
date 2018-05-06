@@ -20,6 +20,13 @@ import banco.entity.Movimiento;
 import banco.ejb.MovimientoFacade;
 import banco.ejb.UsuarioFacade;
 import banco.entity.Usuario;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  *
@@ -51,32 +58,55 @@ public class Usuario_TransferenciaServlet extends HttpServlet {
         Usuario usuario; 
         usuario = (Usuario)session.getAttribute("usuario"); // cogemos al usuario
         
-        String beneficiario, concepto;
-        double saldo;
+        String beneficiario, concepto, error;
+        double importe;
         
-        saldo = Double.parseDouble(request.getParameter("Importe"));
+        importe = Double.parseDouble(request.getParameter("Importe"));
         beneficiario = request.getParameter("Beneficiario");
         concepto = request.getParameter("Concepto");
-        if(beneficiario.equals(usuario.getCuenta().toString())) { // si lo manda a si mismo
-            if(saldo < usuario.getSaldo()){
+        
+        
+        Usuario ben = this.usuarioFacade.findByDni(beneficiario);
+        
+        
+        if(beneficiario.equals(usuario.getDni())) { // si lo manda a si mismo
+            if(importe > usuario.getSaldo()){
                 //saltar error
+                
+                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ErrorUsuario.jsp");
+                rd.forward(request, response);
             } else {
             RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
             rd.forward(request, response);
             }
         } else {
+            
+            if(importe > usuario.getSaldo()){ // no puede enviar mas dinero de lo que tiene
+                
+                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
+                rd.forward(request, response);  
+                
+            } else {
+                
             // añadir importe al beneficiario
             Movimiento nuevoMovimiento = new Movimiento();
-            nuevoMovimiento.setCantidad(usuario.getSaldo()+saldo);
+            nuevoMovimiento.setCantidad(importe);
             nuevoMovimiento.setConcepto(concepto);
-            nuevoMovimiento.setUsuarioidUsuario(usuario.getUsuarioidUsuario());
-            nuevoMovimiento.setUsuarioidUsuario1(usuarioFacade.buscarPorDni(beneficiario));  
+            nuevoMovimiento.setUsuarioidUsuario(usuario);
+            nuevoMovimiento.setUsuarioidUsuario1(usuario);
+            nuevoMovimiento.setFecha(new Date());
+            nuevoMovimiento.setTipo("transferencia");
+            nuevoMovimiento.setEntidad(beneficiario);
             //creamos nuevo movimiento
-            movimientoFacade.create(nuevoMovimiento);
-        
+            this.movimientoFacade.create(nuevoMovimiento);
+            ben.setSaldo((ben.getSaldo()) + importe);
+            usuario.setSaldo((usuario.getSaldo()) - importe);
+            this.usuarioFacade.edit(ben);
+            this.usuarioFacade.edit(usuario);
 
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
-        rd.forward(request, response); 
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Usuario_Transferencias.jsp");
+            rd.forward(request, response); 
+            }
         }
         }
     
