@@ -37,6 +37,7 @@
         <th>Nombre</th>
         <th>Apellidos</th>
         <th>DNI</th>
+        <th>Saldo</th>
         <th>Teléfono</th>
         <th>Email</th>
         <th>Número de Cuenta</th>
@@ -57,6 +58,9 @@
             </td>
             <td>
                 <%= usuario.getDni()%>
+            </td>
+            <td>
+                <%= usuario.getSaldo()%>
             </td>
             <td>
                 <%= usuario.getTelefono()%>

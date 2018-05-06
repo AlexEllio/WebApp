@@ -31,6 +31,7 @@
         <th>Apellidos</th>
         <th>DNI</th>
         <th>Concepto</th>
+        <th>Cantidad</th>
         <th>Tipo de Movimiento</th>
         <th>Entidad</th>
         <th>Empleado Supervisor</th>
@@ -40,6 +41,8 @@
             for (Movimiento movimiento : lista) {
         %>   
         <tr>
+            <%if (usuario.getIdUsuario() == movimiento.getUsuarioidUsuario().getIdUsuario()) {
+            %>
             <td>
                 <%= movimiento.getUsuarioidUsuario().getNombre()%>
             </td>
@@ -53,6 +56,9 @@
                 <%= movimiento.getConcepto() %>
             </td>
             <td>
+                <%= movimiento.getCantidad() %>
+            </td>
+            <td>
                 <%= movimiento.getTipo()%>
             </td>
             <td>
@@ -63,6 +69,8 @@
 
 
             <td><a href="Empleado_EditarMovimientoServlet?iduser=<%= movimiento.getUsuarioidUsuario().getIdUsuario()%>&idmovimiento=<%= movimiento.getIdMovimiento()%>" >Editar</a></td>
+            <%}
+            %>
         </tr>
         <%
             }
