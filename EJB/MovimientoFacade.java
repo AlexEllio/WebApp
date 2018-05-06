@@ -43,11 +43,8 @@ public class MovimientoFacade extends AbstractFacade<Movimiento> {
         q.setParameter("id", dni);
         
         List<Movimiento> lista = q.getResultList();
-        if (lista == null || lista.isEmpty()) {
-            return null;
-        } else {
-            return lista;
-        }
+        
+        return lista;
     }
      
 }
