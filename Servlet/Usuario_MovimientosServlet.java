@@ -45,15 +45,14 @@ public class Usuario_MovimientosServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        Integer id;
-        String nombre, apellidos;
+        String nombre, apellidos,dni;
         double saldo;
          
         Usuario usuario = new Usuario();
         usuario = (Usuario)session.getAttribute("usuario");
-        id = usuario.getIdUsuario();
+        dni = usuario.getDni();
         
-        List<Movimiento> listaMovimientos = this.movimientoFacade.buscarPorIdUsuario(id);
+        List<Movimiento> listaMovimientos = this.movimientoFacade.BuscarMovimientoPorDni(dni);
         request.setAttribute("listaMovimientos", listaMovimientos);
         
         saldo = usuario.getSaldo();
