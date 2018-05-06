@@ -76,9 +76,6 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
             movimiento = this.movimientoFacade.find(new Integer(id));
         }
 
-        if (tipodemovimiento != null) {
-            movimiento.setTipo(tipodemovimiento);
-        }
 
         if (fecha != null) {
             String fechaAMD = fecha.substring(0, 9);
@@ -116,12 +113,33 @@ public class Empleado_CrearActualizarMovimientoServlet extends HttpServlet {
             movimiento.setUsuarioidUsuario(u);
         }
         
+         if (tipodemovimiento != null) {
+               double dinero= Double.parseDouble(cantidad);
+            movimiento.setTipo(tipodemovimiento);
+            if(tipodemovimiento.equals("ingreso")){
+                Usuario x = this.usuarioFacade.find(new Integer(usuario));
+                x.setSaldo(x.getSaldo()+dinero);
+                this.usuarioFacade.edit(x);
+            }else if(tipodemovimiento.equals("debito")){
+               Usuario x = this.usuarioFacade.find(new Integer(usuario));
+                x.setSaldo(x.getSaldo()-dinero);
+                this.usuarioFacade.edit(x); 
+            }else{
+                Usuario x = this.usuarioFacade.find(new Integer(usuario));
+                x.setSaldo(x.getSaldo()-dinero);
+                this.usuarioFacade.edit(x);
+                Usuario y = this.usuarioFacade.findByDni(entidad);
+                y.setSaldo(y.getSaldo()+dinero);
+                this.usuarioFacade.edit(y);
+            }
+        }
+        
         if ("".equals(id)) {
             this.movimientoFacade.create(movimiento);
         } else {
             this.movimientoFacade.edit(movimiento);
         }
-
+        
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/Empleado_UsuarioServlet"); ////CAMBIARRRR!!! es solo de prueba
         rd.forward(request, response);
     }
